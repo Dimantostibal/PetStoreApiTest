@@ -5,12 +5,12 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
-import org.example.model.Inventory;
 import org.example.model.Order;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Map;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
@@ -78,16 +78,13 @@ public class StoreApiTest {
 
     @Test
     public void getInventoryTest() {
-        Inventory inventory = new Inventory();
-        inventory.setSold2(11);
-        given()
-                .body(inventory)
+        Map<String, Object> map = given()
                 .when()
                 .get("/store/inventory")
                 .then()
                 .statusCode(200)
-                .extract().body().as(Inventory.class);
+                .extract().jsonPath().getMap("",String.class, Object.class);
 
-        Assert.assertEquals(inventory.getSold2(), 11, "Inventory не содержит статус sold=11");
+        Assert.assertTrue(map.containsKey("sold"),"Inventory не содержит статус sold=11");
     }
 }
