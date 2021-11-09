@@ -41,7 +41,6 @@ public class StoreApiTest {
         order.setStatus("approved");
         order.setComplete(true);
 
-        order.setComplete(true);
         given()
                 .body(order)
                 .when()
@@ -85,6 +84,6 @@ public class StoreApiTest {
                 .statusCode(200)
                 .extract().jsonPath().getMap("",String.class, Object.class);
 
-        Assert.assertTrue(map.containsKey("sold"),"Inventory не содержит статус sold=11");
+        Assert.assertTrue(map.containsKey("sold"),"Inventory не содержит статус sold");
     }
 }
